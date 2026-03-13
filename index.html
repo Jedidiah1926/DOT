@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOT | Official Website</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --bg-color: #ffffff;
+            --main-text: #000000;
+            --sub-text: #555555;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e0e0e0 0.8px, transparent 0.8px);
+            background-size: 30px 30px;
+            color: var(--main-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            word-break: keep-all;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.07);
+        }
+
+        nav {
+            width: 85%;
+            max-width: 1100px;
+            margin-top: 30px;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 10px; }
+
+        .lang-switch button {
+            background: transparent;
+            border: 1px solid #000;
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: 0.2s;
+        }
+
+        .lang-switch button.active { background: #000; color: #fff; }
+
+        header { text-align: center; padding: 160px 20px 100px 20px; }
+        .hero-title { font-size: 6rem; font-weight: 900; margin: 0; letter-spacing: -3px; }
+
+        section { width: 85%; max-width: 1000px; margin-bottom: 60px; padding: 70px; box-sizing: border-box; }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #000;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 2px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .game-title { font-size: 4rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 20px 0 30px 0;
+            color: #111;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .description { line-height: 1.9; font-size: 1.1rem; color: var(--sub-text); max-width: 85%; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 85%; max-width: 1000px; margin-bottom: 120px; }
+        .small-card { padding: 45px; }
+
+        footer { padding-bottom: 80px; color: #bbb; font-size: 0.75rem; letter-spacing: 3px; }
+
+        [data-lang] { display: none; }
+    </style>
+</head>
+<body>
+
+    <nav class="glass-panel">
+        <div class="logo">DOT</div>
+        <div class="lang-switch">
+            <button onclick="setLang('ko')" id="btn-ko">KR</button>
+            <button onclick="setLang('en')" id="btn-en">EN</button>
+            <button onclick="setLang('jp')" id="btn-jp">JP</button>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="hero-title">DOT</h1>
+        <p data-lang="ko" style="margin-top:20px; letter-spacing: 2px;">기록되지 않은 이야기들을 연결합니다</p>
+        <p data-lang="en" style="margin-top:20px; letter-spacing: 2px;">CONNECTING STORIES YET TO BE TOLD</p>
+        <p data-lang="jp" style="margin-top:20px; letter-spacing: 2px;">記録されていない物語を繋ぎます</p>
+    </header>
+
+    <section class="glass-panel">
+        <span class="tag">Flagship Project</span>
+        <h2 class="game-title">Memoria</h2>
+        
+        <div class="tagline">
+            <span data-lang="ko">"잊혀진 모든 것들은 기록되기를 기다리고 있다."</span>
+            <span data-lang="en">"Everything forgotten is waiting to be recorded."</span>
+            <span data-lang="jp">"忘れられたすべては、記録されるのを待っている。"</span>
+        </div>
+
+        <p class="description" data-lang="ko">흩어진 시간의 파편들을 모아 거대한 운명을 완성하는 서사 중심의 게임입니다. DOT의 철학이 시작된 가장 방대한 세계관을 품고 있습니다.</p>
+        <p class="description" data-lang="en">A narrative-driven experience collecting fragments of time. It holds the most extensive universe where DOT's philosophy began.</p>
+        <p class="description" data-lang="jp">散らばった時間の破片を集め、巨大な運命を完成させる物語中心のゲームです。DOTの哲学が込められた最も広大な世界観を持っています。</p>
+    </section>
+
+    <section class="glass-panel">
+        <span class="tag">Prequel Project</span>
+        <h2 class="game-title">Lus</h2>
+
+        <div class="tagline">
+            <span data-lang="ko">"어둠이 깊어지기 전, 가장 먼저 타올랐던 찬란한 시작."</span>
+            <span data-lang="en">"The brilliant beginning that burned before the darkness deepened."</span>
+            <span data-lang="jp">"闇が深まる前、最も先に燃え上がった輝かしい始まり。"</span>
+        </div>
+
+        <p class="description" data-lang="ko">'Lus'는 Memoria의 세계가 탄생하기 전, 최초의 빛이 생겨난 기원을 다룹니다. 우리가 알고 있는 세계의 이면을 탐구합니다.</p>
+        <p class="description" data-lang="en">'Lus' deals with the origin of the first light before the world of Memoria. Exploring the hidden side of the world we know.</p>
+        <p class="description" data-lang="jp">「Lus」は、Memoriaの世界が誕生する前、最初の光が生まれた起源を扱います。私たちが知っている世界の裏側を探究します。</p>
+    </section>
+
+    <div class="grid">
+        <div class="glass-panel small-card">
+            <h3 style="margin-top:0; letter-spacing: -0.5px;">Project Alpha</h3>
+            <div style="font-style: italic; margin-bottom: 15px; font-weight: 600; font-size: 1.1rem;">
+                <span data-lang="ko">"보이지 않는 선을 따라가세요."</span>
+                <span data-lang="en">"Follow the invisible lines."</span>
+                <span data-lang="jp">"見えない線を辿ってください。"</span>
+            </div>
+            <p data-lang="ko" style="color:var(--sub-text); font-size: 0.95rem;">세계관을 공유하는 퍼즐 어드벤처.</p>
+            <p data-lang="en" style="color:var(--sub-text); font-size: 0.95rem;">A puzzle adventure in the same universe.</p>
+            <p data-lang="jp" style="color:var(--sub-text); font-size: 0.95rem;">世界観を共有するパズルアドベンチャー。</p>
+        </div>
+        <div class="glass-panel small-card">
+            <h3 style="margin-top:0; letter-spacing: -0.5px;">Project Beta</h3>
+            <div style="font-style: italic; margin-bottom: 15px; font-weight: 600; font-size: 1.1rem;">
+                <span data-lang="ko">"혼자가 아닐 때, 진실은 드러납니다."</span>
+                <span data-lang="en">"Truth reveals when you are not alone."</span>
+                <span data-lang="jp">"一人ではない時、真実は現れる。"</span>
+            </div>
+            <p data-lang="ko" style="color:var(--sub-text); font-size: 0.95rem;">실험적인 멀티플레이어 프로젝트.</p>
+            <p data-lang="en" style="color:var(--sub-text); font-size: 0.95rem;">Experimental multiplayer project.</p>
+            <p data-lang="jp" style="color:var(--sub-text); font-size: 0.95rem;">実験的なマルチプレイヤープロジェクト。</p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 DOT. CALIFORNIA, USA.
+    </footer>
+
+    <script>
+        function setLang(lang) {
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            document.querySelectorAll('[data-lang="' + lang + '"]').forEach(el => {
+                if (el.tagName === 'SPAN') {
+                    el.style.display = 'inline';
+                } else {
+                    el.style.display = 'block';
+                }
+            });
+
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + lang).classList.add('active');
+            document.documentElement.lang = lang;
+        }
+        window.onload = () => setLang('ko');
+    </script>
+</body>
+</html>

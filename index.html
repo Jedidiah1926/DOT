@@ -443,8 +443,9 @@
       });
 
       // 시간선: 점이 왼쪽부터 하나씩 켜지고 마지막에 선이 그어짐
-      const tr = timeline.getBoundingClientRect();
-      const tp = clamp((vh * 0.95 - tr.top) / (vh * 0.5));
+      // 화면 아래로 들어온 직후(위쪽이 화면 100% → 86% 지점) 사이에 끝까지 그려져서, 섹션 끝에서 멈춰도 선이 완성됨
+      const tr = document.getElementById('track').getBoundingClientRect();
+      const tp = clamp((vh * 1.0 - tr.top) / (vh * 0.14));
       const n = timelineDots.length;
       timelineDots.forEach((d, i) => {
         const on = clamp((tp * 0.8 - (i / n) * 0.8) * 8);

@@ -447,12 +447,13 @@
       const tr = document.getElementById('track').getBoundingClientRect();
       const tp = clamp((vh * 1.0 - tr.top) / (vh * 0.14));
       const n = timelineDots.length;
+      // 점은 진행도 0 → 0.7 안에 모두 켜지고(각 점은 0.1 동안), 선은 그 뒤 0.72 → 1 에 그어짐
       timelineDots.forEach((d, i) => {
-        const on = clamp((tp * 0.8 - (i / n) * 0.8) * 8);
+        const on = range(tp, (i / (n - 1)) * 0.6, (i / (n - 1)) * 0.6 + 0.1);
         d.style.opacity = (on * d.dataset.o).toFixed(3);
         d.style.transform = 'scale(' + (0.4 + 0.6 * on).toFixed(3) + ')';
       });
-      timelineLine.style.transform = 'scaleX(' + range(tp, 0.8, 1).toFixed(4) + ')';
+      timelineLine.style.transform = 'scaleX(' + range(tp, 0.72, 1).toFixed(4) + ')';
     }
 
     let ticking = false;

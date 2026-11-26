@@ -329,10 +329,11 @@
   (function () {
     const track = document.getElementById('track');
     let x = 0, gap = 64;
-    for (let i = 0; i < 40; i++) {
-      const o = 0.35 + 0.65 * i / 39;
-      // 지름: 10px → 4px(선 두께). 끝으로 갈수록 빠르게 줄어 마지막 점들이 선과 이어진다. 세로 가운데(8px)에 맞춤
-      const size = 4 + 6 * Math.pow(1 - i / 39, 1.6);
+    const DOT_COUNT = 40;
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const o = 0.35 + 0.65 * i / (DOT_COUNT - 1);
+      // 지름: 10px → 4px(선 두께). 점 하나마다 6 / (점 개수 - 1)px씩 일정하게 줄어 마지막 점이 선 두께가 된다. 세로 가운데(8px)에 맞춤
+      const size = 10 - 6 * i / (DOT_COUNT - 1);
       const d = document.createElement('span');
       d.style.left = x.toFixed(1) + 'px';
       d.style.width = d.style.height = size.toFixed(2) + 'px';

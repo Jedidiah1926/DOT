@@ -23,6 +23,7 @@
     --on-light: #0A0A0A;
     --on-light-2: #6E6E73;
     --hemicycle: #00F0FF;
+    --const: #FFA41C;
     --tile: radial-gradient(circle at 50% 45%, var(--ink-glow) 0%, var(--ink) 75%);
   }
 
@@ -123,7 +124,7 @@
   .light .eyebrow, .light .lead { color: var(--on-light-2); }
 
   /* ---------- products ---------- */
-  .products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
   .product {
     background: var(--card);
     border-radius: 28px;
@@ -139,6 +140,9 @@
   .hemi { position: relative; width: 130px; height: 82px; margin-top: 12px; }
   .hemi span { position: absolute; width: 8px; height: 8px; border-radius: 50%; }
   .hemi .podium { left: 55px; top: 71px; width: 20px; height: 3px; border-radius: 0; background: #E6E6E6; box-shadow: 0 0 4px rgba(255,255,255,0.6); }
+  .const-icon { position: relative; width: 104px; height: 92px; }
+  .const-icon span { position: absolute; border-radius: 50%; }
+  .const-icon .bar { width: 2px; border-radius: 0; background: #FF9F1A; box-shadow: 0 0 6px #FF9F1A; }
   .product .name { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.04em; }
   .product .name::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .product .desc { font-size: 15px; color: var(--on-light-2); margin: -16px 0 0; }
@@ -178,12 +182,15 @@
   .product-mark { display: flex; align-items: center; gap: 16px; }
   .product-mark .mark { font-size: 36px; color: #8A949E; }
   .product-mark .mark .dot { background: var(--hemicycle); box-shadow: 0 0 8px var(--hemicycle); }
+  .product-mark.const .mark .dot { background: var(--const); box-shadow: 0 0 8px var(--const); }
+  .product-marks { display: flex; flex-direction: column; gap: 14px; }
   .product-mark .label { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
   .swatches { display: flex; gap: 12px; }
   .swatches span { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
   .swatches .w { background: #FFFFFF; box-shadow: 0 0 0 4px var(--ink) inset; }
   .swatches .k { background: var(--ink); }
   .swatches .c { background: var(--hemicycle); }
+  .swatches .a { background: var(--const); }
   .type-sample { font-weight: 800; font-size: 56px; letter-spacing: -0.04em; line-height: 1; }
 
   /* ---------- footer ---------- */
@@ -279,6 +286,13 @@
           <span class="name">Hemicycle</span>
           <p class="desc">의회 게임 · 점이 의석이 돼요</p>
         </article>
+        <article class="product">
+          <div class="app-tile" role="img" aria-label="Const 앱 아이콘">
+            <div class="const-icon" id="const-icon"></div>
+          </div>
+          <span class="name">Const</span>
+          <p class="desc">세계관 노트 · 점이 별자리가 돼요</p>
+        </article>
         <article class="product next">
           <div class="app-tile" aria-hidden="true">
             <span style="width:14px;height:14px;border-radius:50%;background:#5A6470"></span>
@@ -321,16 +335,22 @@
         <div class="spec">
           <div class="body">
             <span class="type-sample">Aa</span>
-            <div class="product-mark">
-              <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
-              <span class="label">Hemicycle</span>
+            <div class="product-marks">
+              <div class="product-mark">
+                <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
+                <span class="label">Hemicycle</span>
+              </div>
+              <div class="product-mark const">
+                <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
+                <span class="label">Const</span>
+              </div>
             </div>
           </div>
           <div><div class="t">워드마크 · 서체</div><div class="s">Inter ExtraBold. 점은 대문자 높이 가운데, 지름은 글자 크기의 26%. 제품 표기는 가운데 점만 제품 색.</div></div>
         </div>
         <div class="spec">
           <div class="body">
-            <div class="swatches" aria-hidden="true"><span class="w"></span><span class="k"></span><span class="c"></span></div>
+            <div class="swatches" aria-hidden="true"><span class="w"></span><span class="k"></span><span class="c"></span><span class="a"></span></div>
           </div>
           <div><div class="t">색</div><div class="s">회사는 흰 네온 · 제품은 각자 네온 하나</div></div>
         </div>
@@ -390,6 +410,37 @@
         s.style.background = c;
         s.style.boxShadow = '0 0 5px ' + c;
         hemi.appendChild(s);
+      }
+    });
+  })();
+
+  // Const 아이콘: 가로 시간선 3줄(점 7개씩). 사건이 일어난 열에서 점들이 세로로 이어져 별자리가 돼요
+  (function () {
+    const box = document.getElementById('const-icon');
+    const amber = '#FF9F1A';
+    const rowsY = [6, 42, 78];
+    const events = { 1: [0, 1], 4: [0, 1, 2] };
+    Object.keys(events).forEach((k) => {
+      const rs = events[k];
+      const top = rowsY[rs[0]] + 4, bot = rowsY[rs[rs.length - 1]] + 4;
+      const l = document.createElement('span');
+      l.className = 'bar';
+      l.style.left = (k * 16 + 3) + 'px';
+      l.style.top = top + 'px';
+      l.style.height = (bot - top) + 'px';
+      box.appendChild(l);
+    });
+    rowsY.forEach((yy, r) => {
+      for (let k = 0; k < 7; k++) {
+        const lit = events[k] && events[k].includes(r);
+        const sz = lit ? 10 : 6, x = k * 16 + 4;
+        const s = document.createElement('span');
+        s.style.left = (x - sz / 2) + 'px';
+        s.style.top = (yy + 4 - sz / 2) + 'px';
+        s.style.width = s.style.height = sz + 'px';
+        if (lit) { s.style.background = amber; s.style.boxShadow = '0 0 5px ' + amber; }
+        else s.style.background = 'rgba(255,159,26,0.35)';
+        box.appendChild(s);
       }
     });
   })();

@@ -11,7 +11,6 @@
 <style>
   :root {
     --ink: #05080B;
-    --ink-2: #0C1217;
     --ink-glow: #0F181E;
     --line-dark: #18212A;
     --line-dark-2: #1F2A33;
@@ -24,7 +23,7 @@
     --on-light-2: #6E6E73;
     --hemicycle: #00F0FF;
     --const: #FFA41C;
-    --tile: radial-gradient(circle at 50% 45%, var(--ink-glow) 0%, var(--ink) 75%);
+    --nav-h: 68px;
   }
 
   * { box-sizing: border-box; }
@@ -41,22 +40,17 @@
   .wrap { width: 100%; max-width: 1312px; margin: 0 auto; padding: 0 64px; }
 
   /* ---------- wordmark: D · T, 점 지름 = 글자 크기 26%, 대문자 높이 가운데 ---------- */
-  .mark {
-    font-family: Inter, sans-serif;
-    font-weight: 800;
-    line-height: 1;
-    white-space: nowrap;
-  }
+  .mark { font-family: Inter, sans-serif; font-weight: 800; line-height: 1; white-space: nowrap; margin: 0; }
   .mark .dot {
     display: inline-block;
     width: 0.26em; height: 0.26em;
     margin: 0 0.14em;
     vertical-align: 0.2335em;
     border-radius: 50%;
-    background: currentColor;
+    background: #FFFFFF;
+    box-shadow: 0 0 0.06em #FFFFFF, 0 0 0.22em rgba(255,255,255,0.45);
   }
-  .mark.neon { color: var(--on-dark); text-shadow: 0 0 0.08em rgba(255,255,255,0.22); }
-  .mark.neon .dot { background: #FFFFFF; box-shadow: 0 0 0.06em #FFFFFF, 0 0 0.22em rgba(255,255,255,0.45); }
+  .mark { color: var(--on-dark); text-shadow: 0 0 0.08em rgba(255,255,255,0.22); }
 
   /* ---------- nav ---------- */
   nav {
@@ -64,27 +58,38 @@
     background: rgba(5, 8, 11, 0.82);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--line-dark);
   }
-  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); gap: 24px; }
   nav .mark { font-size: 26px; text-decoration: none; }
   nav ul { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
   nav ul a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--on-dark-3); display: inline-block; padding: 12px 0; }
   nav ul a:hover { color: #FFFFFF; }
 
-  /* ---------- hero ---------- */
+  /* ---------- hero: 스크롤에 고정된 장면 ---------- */
+  .hero-scroll { height: 240vh; position: relative; }
   .hero {
-    min-height: calc(100vh - 68px);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 40px;
-    padding: 96px 24px;
-    text-align: center;
-    background: radial-gradient(circle at 50% 48%, #101A21 0%, var(--ink) 70%);
-    border-bottom: 1px solid var(--line-dark);
+    position: sticky; top: var(--nav-h);
+    height: calc(100vh - var(--nav-h));
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    /* closest-side: 가장자리에서 완전히 바탕색이 되어 아래 섹션과 이음새가 없다 */
+    background: radial-gradient(closest-side circle at 50% 48%, #101A21 0%, var(--ink) 100%);
   }
-  .hero .mark { font-size: clamp(120px, 21vw, 300px); }
-  .hero p { margin: 0; font-size: clamp(17px, 2vw, 21px); color: var(--on-dark-2); line-height: 1.6; }
-  .hero p strong { color: #FFFFFF; font-weight: 600; }
+  .hero .mark { font-size: clamp(120px, 21vw, 300px); will-change: transform, opacity; }
+  .hero .tagline {
+    position: absolute; left: 24px; right: 24px; top: 50%;
+    margin: 0; text-align: center;
+    font-size: clamp(28px, 4.4vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.25;
+    color: #FFFFFF;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .hero .cue {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    font-size: 13px; color: var(--on-dark-3); letter-spacing: 0.08em;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .hero .cue span { width: 1px; height: 32px; background: linear-gradient(var(--on-dark-3), transparent); }
 
   /* ---------- section heads ---------- */
   section { padding: 120px 0; }
@@ -94,7 +99,7 @@
   .head { margin-bottom: 56px; }
 
   /* ---------- vision ---------- */
-  #vision { background: radial-gradient(circle at 50% 20%, var(--ink-glow) 0%, var(--ink) 70%); }
+  #vision { padding-top: 40px; }
   .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
   .pillar {
     border: 1px solid var(--line-dark-2);
@@ -116,82 +121,60 @@
   .timeline { margin-top: 88px; display: flex; flex-direction: column; gap: 22px; }
   .timeline .track { position: relative; height: 16px; overflow: hidden; }
   .timeline .track span { position: absolute; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: #FFFFFF; }
-  .timeline .track .line { top: 6px; height: 4px; width: auto; border-radius: 2px; right: 0; box-shadow: 0 0 10px #FFFFFF; }
+  .timeline .track .line { top: 6px; height: 4px; width: auto; border-radius: 2px; right: 0; box-shadow: 0 0 10px #FFFFFF; transform-origin: left center; }
   .timeline .legend { display: flex; justify-content: space-between; gap: 16px; font-size: 15px; color: var(--on-dark-3); }
 
-  /* ---------- light sections ---------- */
-  .light { background: var(--paper); color: var(--on-light); }
-  .light .eyebrow, .light .lead { color: var(--on-light-2); }
-
   /* ---------- products ---------- */
+  #products { background: var(--paper); color: var(--on-light); }
+  #products .eyebrow { color: var(--on-light-2); }
   .products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
   .product {
+    --glow: rgba(255,255,255,0.0);
     background: var(--card);
     border-radius: 28px;
-    padding: 64px 32px;
+    padding: 64px 32px 56px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
     text-align: center;
+    text-decoration: none; color: inherit;
+    height: 100%;
+    transition: translate 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.45s cubic-bezier(.2,.8,.2,1);
   }
+  .product.hemicycle { --glow: rgba(0, 240, 255, 0.55); }
+  .product.const { --glow: rgba(255, 164, 28, 0.55); }
   .app-tile {
     width: 168px; height: 168px; border-radius: 38px;
     background: radial-gradient(circle at 50% 42%, var(--ink-glow) 0%, var(--ink) 75%);
     display: flex; align-items: center; justify-content: center;
+    transition: transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.45s cubic-bezier(.2,.8,.2,1);
   }
+  .product:hover, .product:focus-visible {
+    translate: 0 -10px;
+    box-shadow: 0 28px 60px rgba(0,0,0,0.10), 0 6px 16px rgba(0,0,0,0.05);
+  }
+  .product:hover .app-tile, .product:focus-visible .app-tile {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 16px 48px var(--glow);
+  }
+  .product:focus-visible { outline: 2px solid var(--on-light); outline-offset: 4px; }
+
   .hemi { position: relative; width: 130px; height: 82px; margin-top: 12px; }
   .hemi span { position: absolute; width: 8px; height: 8px; border-radius: 50%; }
   .hemi .podium { left: 55px; top: 71px; width: 20px; height: 3px; border-radius: 0; background: #E6E6E6; box-shadow: 0 0 4px rgba(255,255,255,0.6); }
   .const-icon { position: relative; width: 104px; height: 92px; }
   .const-icon span { position: absolute; border-radius: 50%; }
   .const-icon .bar { width: 2px; border-radius: 0; background: #FF9F1A; box-shadow: 0 0 6px #FF9F1A; }
+
   .product .name { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.04em; }
   .product .name::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .product .desc { font-size: 15px; color: var(--on-light-2); margin: -16px 0 0; }
+  .product .go {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 15px; font-weight: 600; color: var(--on-light);
+    margin-top: -8px;
+  }
+  .product .go svg { transition: transform 0.35s cubic-bezier(.2,.8,.2,1); }
+  .product:hover .go svg { transform: translate(3px, -3px); }
   .product.next .name { color: #8E8E93; }
-
-  /* ---------- brand ---------- */
-  .brand-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
-  .plate {
-    position: relative;
-    height: 420px; border-radius: 28px;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .plate .mark { font-size: clamp(96px, 11vw, 168px); }
-  .plate .cap { position: absolute; left: 32px; bottom: 28px; font-size: 14px; }
-  .plate.dark { background: var(--tile); }
-  .plate.dark .cap { color: #A1A1A6; }
-  .plate.paper { background: var(--card); color: var(--on-light); }
-  .plate.paper .cap { color: var(--on-light-2); }
-
-  .brand-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 32px; }
-  .spec {
-    background: var(--card); border-radius: 20px; padding: 28px;
-    display: flex; flex-direction: column; gap: 20px; min-height: 220px;
-  }
-  .spec .t { font-size: 15px; font-weight: 600; }
-  .spec .s { font-size: 13px; color: var(--on-light-2); line-height: 1.5; }
-  .spec .body { flex-grow: 1; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .icon { background: var(--tile); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--line-dark); }
-  .icon span { border-radius: 50%; background: #FFFFFF; }
-  .icon.l { width: 96px; height: 96px; border-radius: 22px; }
-  .icon.l span { width: 32px; height: 32px; box-shadow: 0 0 10px #FFFFFF, 0 0 24px rgba(255,255,255,0.4); }
-  .icon.m { width: 48px; height: 48px; border-radius: 11px; }
-  .icon.m span { width: 16px; height: 16px; box-shadow: 0 0 6px #FFFFFF; }
-  .icon.s { width: 24px; height: 24px; border-radius: 6px; }
-  .icon.s span { width: 9px; height: 9px; }
-  .product-mark { display: flex; align-items: center; gap: 16px; }
-  .product-mark .mark { font-size: 36px; color: #8A949E; }
-  .product-mark .mark .dot { background: var(--hemicycle); box-shadow: 0 0 8px var(--hemicycle); }
-  .product-mark.const .mark .dot { background: var(--const); box-shadow: 0 0 8px var(--const); }
-  .product-marks { display: flex; flex-direction: column; gap: 14px; }
-  .product-mark .label { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
-  .swatches { display: flex; gap: 12px; }
-  .swatches span { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
-  .swatches .w { background: #FFFFFF; box-shadow: 0 0 0 4px var(--ink) inset; }
-  .swatches .k { background: var(--ink); }
-  .swatches .c { background: var(--hemicycle); }
-  .swatches .a { background: var(--const); }
-  .type-sample { font-weight: 800; font-size: 56px; letter-spacing: -0.04em; line-height: 1; }
 
   /* ---------- footer ---------- */
   footer { border-top: 1px solid var(--line-dark); padding: 48px 0; }
@@ -199,12 +182,15 @@
   footer .mark { font-size: 22px; }
   footer small { font-size: 13px; color: var(--on-dark-3); }
 
+  /* ---------- scroll reveal (스크롤 위치에 묶여 내리면 진행, 올리면 역진행) ---------- */
+  [data-reveal] { will-change: transform, opacity; }
+
   /* ---------- responsive ---------- */
   @media (max-width: 960px) {
     .wrap { padding: 0 32px; }
-    .pillars, .products, .brand-hero, .brand-row { grid-template-columns: minmax(0, 1fr); }
-    .plate { height: 300px; }
+    .pillars, .products { grid-template-columns: minmax(0, 1fr); }
     section { padding: 88px 0; }
+    .hero-scroll { height: 200vh; }
   }
   @media (max-width: 600px) {
     .wrap { padding: 0 16px; }
@@ -214,7 +200,14 @@
     .product { padding: 48px 20px; }
     .product .name { font-size: 36px; }
     .timeline .legend { font-size: 13px; }
-    .plate .cap { left: 20px; bottom: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-scroll { height: auto; }
+    .hero { position: relative; top: 0; flex-direction: column; gap: 32px; }
+    .hero .tagline { position: static; opacity: 1; }
+    .hero .cue { display: none; }
+    .product, .app-tile, .product .go svg { transition: none; }
   }
 </style>
 </head>
@@ -222,137 +215,93 @@
 
 <nav aria-label="주 메뉴">
   <div class="wrap">
-    <a href="#top" class="mark neon" aria-label="DOT 홈">D<span class="dot"></span>T</a>
+    <a href="#top" class="mark" aria-label="DOT 홈">D<span class="dot"></span>T</a>
     <ul>
       <li><a href="#vision">비전</a></li>
       <li><a href="#products">제품</a></li>
-      <li><a href="#brand">브랜드</a></li>
     </ul>
   </div>
 </nav>
 
-<header class="hero" id="top">
-  <h1 class="mark neon" aria-label="DOT">D<span class="dot"></span>T</h1>
-  <p>O 자리에 점 하나.<br><strong>점을 모아 하나의 시간선, 하나의 이야기를 만듭니다.</strong></p>
-</header>
+<div class="hero-scroll" id="top">
+  <header class="hero">
+    <h1 class="mark" id="hero-mark" aria-label="DOT">D<span class="dot"></span>T</h1>
+    <p class="tagline" id="hero-tagline">점을 모아 하나의 시간선,<br>하나의 이야기를 만듭니다.</p>
+    <div class="cue" id="hero-cue" aria-hidden="true">SCROLL<span></span></div>
+  </header>
+</div>
 
 <main>
   <section id="vision">
     <div class="wrap">
-      <div class="head">
+      <div class="head" data-reveal>
         <p class="eyebrow">VISION</p>
         <h2>D와 T의 내적</h2>
         <p class="lead">점을 모아 하나의 시간선, 하나의 이야기를 만든다.</p>
       </div>
 
       <div class="pillars">
-        <article class="pillar">
+        <article class="pillar" data-reveal data-delay="0">
           <p class="eyebrow">01 · 무엇을 만드는가</p>
           <div class="pair"><span><b>D</b>ata</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ale</span></div>
           <p>숫자로 돌아가는 시스템 위에 이야기를 얹어요.</p>
         </article>
-        <article class="pillar">
+        <article class="pillar" data-reveal data-delay="0.12">
           <p class="eyebrow">02 · 어떻게 만드는가</p>
           <div class="pair"><span><b>D</b>esign</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ruth</span></div>
           <p>설계한 세계가 진짜처럼 작동하게 만들어요.</p>
         </article>
-        <article class="pillar">
+        <article class="pillar" data-reveal data-delay="0.24">
           <p class="eyebrow">03 · 어디로 가는가</p>
           <div class="pair"><span><b>D</b>ream</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ime</span></div>
           <p>그렇게 쌓인 점들이 하나의 시간선이 돼요.</p>
         </article>
       </div>
 
-      <div class="timeline">
+      <div class="timeline" id="timeline">
         <div class="track" id="track" role="img" aria-label="점이 모여 하나의 선이 되는 시간선"></div>
         <div class="legend"><span>dt · 한 순간</span><span>∫ dt · 하나의 시간선</span></div>
       </div>
     </div>
   </section>
 
-  <section id="products" class="light">
+  <section id="products">
     <div class="wrap">
-      <div class="head">
+      <div class="head" data-reveal>
         <p class="eyebrow">PRODUCTS</p>
         <h2>DOT 제품 패밀리</h2>
-        <p class="lead">어두운 타일 위, 빛나는 점으로 그린 그림. 제품마다 네온 색 하나.</p>
       </div>
 
       <div class="products">
-        <article class="product">
-          <div class="app-tile" role="img" aria-label="Hemicycle 앱 아이콘">
-            <div class="hemi" id="hemi"><span class="podium"></span></div>
-          </div>
-          <span class="name">Hemicycle</span>
-          <p class="desc">의회 게임 · 점이 의석이 돼요</p>
-        </article>
-        <article class="product">
-          <div class="app-tile" role="img" aria-label="Const 앱 아이콘">
-            <div class="const-icon" id="const-icon"></div>
-          </div>
-          <span class="name">Const</span>
-          <p class="desc">세계관 노트 · 점이 별자리가 돼요</p>
-        </article>
-        <article class="product next">
-          <div class="app-tile" aria-hidden="true">
-            <span style="width:14px;height:14px;border-radius:50%;background:#5A6470"></span>
-          </div>
-          <span class="name">다음 제품</span>
-          <p class="desc">같은 타일에 점 그림과 네온 색만 바꿔요</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="brand" class="light" style="padding-top:0">
-    <div class="wrap">
-      <div class="head">
-        <p class="eyebrow">BRAND</p>
-        <h2>DOT 브랜드</h2>
-        <p class="lead">O 자리에 점 하나. 어두운 곳에서는 제품 라인처럼 빛나요.</p>
-      </div>
-
-      <div class="brand-hero">
-        <div class="plate dark">
-          <span class="mark neon" role="img" aria-label="DOT">D<span class="dot"></span>T</span>
-          <span class="cap">네온 · 기본</span>
-        </div>
-        <div class="plate paper">
-          <span class="mark" role="img" aria-label="DOT">D<span class="dot"></span>T</span>
-          <span class="cap">라이트 · 인쇄용</span>
-        </div>
-      </div>
-
-      <div class="brand-row">
-        <div class="spec">
-          <div class="body">
-            <span class="icon l" aria-hidden="true"><span></span></span>
-            <span class="icon m" aria-hidden="true"><span></span></span>
-            <span class="icon s" aria-hidden="true"><span></span></span>
-          </div>
-          <div><div class="t">심볼 · 앱 아이콘과 파비콘</div><div class="s">어두운 타일 위 빛나는 점</div></div>
-        </div>
-        <div class="spec">
-          <div class="body">
-            <span class="type-sample">Aa</span>
-            <div class="product-marks">
-              <div class="product-mark">
-                <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
-                <span class="label">Hemicycle</span>
-              </div>
-              <div class="product-mark const">
-                <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
-                <span class="label">Const</span>
-              </div>
+        <div data-reveal data-delay="0">
+          <a class="product hemicycle" href="https://jedidiah1926.github.io/hemicycleweb/" target="_blank" rel="noopener">
+            <div class="app-tile" role="img" aria-label="Hemicycle 앱 아이콘">
+              <div class="hemi" id="hemi"><span class="podium"></span></div>
             </div>
-          </div>
-          <div><div class="t">워드마크 · 서체</div><div class="s">Inter ExtraBold. 점은 대문자 높이 가운데, 지름은 글자 크기의 26%. 제품 표기는 가운데 점만 제품 색.</div></div>
+            <span class="name">Hemicycle</span>
+            <p class="desc">의회 게임 · 점이 의석이 돼요</p>
+            <span class="go">사이트 열기
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10L10 4M5 4h5v5"/></svg>
+            </span>
+          </a>
         </div>
-        <div class="spec">
-          <div class="body">
-            <div class="swatches" aria-hidden="true"><span class="w"></span><span class="k"></span><span class="c"></span><span class="a"></span></div>
-          </div>
-          <div><div class="t">색</div><div class="s">회사는 흰 네온 · 제품은 각자 네온 하나</div></div>
+        <div data-reveal data-delay="0.12">
+          <article class="product const">
+            <div class="app-tile" role="img" aria-label="Const 앱 아이콘">
+              <div class="const-icon" id="const-icon"></div>
+            </div>
+            <span class="name">Const</span>
+            <p class="desc">세계관 노트 · 점이 별자리가 돼요</p>
+          </article>
+        </div>
+        <div data-reveal data-delay="0.24">
+          <article class="product next">
+            <div class="app-tile" aria-hidden="true">
+              <span style="width:14px;height:14px;border-radius:50%;background:#5A6470"></span>
+            </div>
+            <span class="name">다음 제품</span>
+            <p class="desc">같은 타일에 점 그림과 네온 색만 바꿔요</p>
+          </article>
         </div>
       </div>
     </div>
@@ -361,30 +310,33 @@
 
 <footer>
   <div class="wrap">
-    <span class="mark neon" aria-label="DOT">D<span class="dot"></span>T</span>
+    <span class="mark" aria-label="DOT">D<span class="dot"></span>T</span>
     <small>&copy; 2026 DOT</small>
   </div>
 </footer>
 
 <script>
   // 비전 시간선: 점 사이 간격이 점점 좁아지다가 하나의 선으로 이어져요
+  const timelineDots = [];
+  let timelineLine;
   (function () {
     const track = document.getElementById('track');
     let x = 0, gap = 64;
     for (let i = 0; i < 40; i++) {
-      const o = (0.35 + 0.65 * i / 39).toFixed(2);
+      const o = 0.35 + 0.65 * i / 39;
       const d = document.createElement('span');
       d.style.left = Math.round(x) + 'px';
-      d.style.opacity = o;
-      d.style.boxShadow = '0 0 6px rgba(255,255,255,' + o + ')';
+      d.style.boxShadow = '0 0 6px rgba(255,255,255,' + o.toFixed(2) + ')';
+      d.dataset.o = o;
       track.appendChild(d);
+      timelineDots.push(d);
       x += gap;
       gap = Math.max(4, gap * 0.9);
     }
-    const line = document.createElement('span');
-    line.className = 'line';
-    line.style.left = Math.round(x) + 'px';
-    track.appendChild(line);
+    timelineLine = document.createElement('span');
+    timelineLine.className = 'line';
+    timelineLine.style.left = Math.round(x) + 'px';
+    track.appendChild(timelineLine);
   })();
 
   // Hemicycle 아이콘: 4줄 반원(16·13·10·7석)을 각도 순으로 정당에 배분
@@ -443,6 +395,74 @@
         box.appendChild(s);
       }
     });
+  })();
+
+  // ---------- 스크롤 연동 트랜지션: 값이 스크롤 위치의 함수라서 내리면 진행, 올리면 그대로 역진행 ----------
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      timelineDots.forEach((d) => { d.style.opacity = d.dataset.o; });
+      return;
+    }
+
+    const clamp = (v) => Math.min(1, Math.max(0, v));
+    const range = (p, a, b) => clamp((p - a) / (b - a));
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+
+    const heroScroll = document.querySelector('.hero-scroll');
+    const mark = document.getElementById('hero-mark');
+    const tagline = document.getElementById('hero-tagline');
+    const cue = document.getElementById('hero-cue');
+    const reveals = Array.from(document.querySelectorAll('[data-reveal]'));
+    const timeline = document.getElementById('timeline');
+
+    function update() {
+      const vh = window.innerHeight;
+
+      // 히어로: 로고가 작아지며 사라지고, 문장이 떠올랐다가 다음 섹션으로 넘어가며 사라짐
+      const hr = heroScroll.getBoundingClientRect();
+      const total = heroScroll.offsetHeight - vh;
+      const p = clamp(-hr.top / total);
+      const m = ease(range(p, 0, 0.45));
+      mark.style.transform = 'scale(' + (1 - 0.45 * m) + ')';
+      mark.style.opacity = 1 - range(p, 0.2, 0.45);
+      mark.style.filter = 'blur(' + (range(p, 0.2, 0.45) * 8).toFixed(2) + 'px)';
+      const tIn = ease(range(p, 0.35, 0.6));
+      const tOut = range(p, 0.82, 1);
+      tagline.style.opacity = tIn * (1 - tOut);
+      tagline.style.transform = 'translateY(calc(-50% + ' + ((1 - tIn) * 48 - tOut * 48).toFixed(1) + 'px)) scale(' + (0.94 + 0.06 * tIn) + ')';
+      cue.style.opacity = 1 - range(p, 0, 0.12);
+
+      // 일반 요소: 화면 아래에서 들어오며 떠오름
+      reveals.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const delay = parseFloat(el.dataset.delay || 0);
+        const t = ease(clamp((vh - r.top) / (vh * 0.4) - delay));
+        el.style.opacity = t;
+        el.style.transform = 'translateY(' + ((1 - t) * 64).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * t).toFixed(4) + ')';
+      });
+
+      // 시간선: 점이 왼쪽부터 하나씩 켜지고 마지막에 선이 그어짐
+      const tr = timeline.getBoundingClientRect();
+      const tp = clamp((vh * 0.95 - tr.top) / (vh * 0.5));
+      const n = timelineDots.length;
+      timelineDots.forEach((d, i) => {
+        const on = clamp((tp * 0.8 - (i / n) * 0.8) * 8);
+        d.style.opacity = (on * d.dataset.o).toFixed(3);
+        d.style.transform = 'scale(' + (0.4 + 0.6 * on).toFixed(3) + ')';
+      });
+      timelineLine.style.transform = 'scaleX(' + range(tp, 0.8, 1).toFixed(4) + ')';
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   })();
 </script>
 </body>

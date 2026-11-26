@@ -100,6 +100,9 @@
 
   /* ---------- vision ---------- */
   #vision { padding-top: 40px; }
+  /* 비전 섹션이 화면에 다 들어오면 그 자리에 고정되고, 고정된 동안의 스크롤로 시간선이 그려진다 (top·높이는 JS가 맞춤) */
+  .vision-scroll { position: relative; }
+  .vision-scroll > #vision { position: sticky; }
   .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
   .pillar {
     border: 1px solid var(--line-dark-2);
@@ -207,6 +210,8 @@
     .hero { position: relative; top: 0; flex-direction: column; gap: 32px; }
     .hero .tagline { position: static; opacity: 1; }
     .hero .cue { display: none; }
+    .vision-scroll { height: auto !important; }
+    .vision-scroll > #vision { position: static; }
     .product, .app-tile, .product .go svg { transition: none; }
   }
 </style>
@@ -232,6 +237,7 @@
 </div>
 
 <main>
+  <div class="vision-scroll" id="vision-scroll">
   <section id="vision">
     <div class="wrap">
       <div class="head" data-reveal>
@@ -264,6 +270,7 @@
       </div>
     </div>
   </section>
+  </div>
 
   <section id="products">
     <div class="wrap">
@@ -414,7 +421,21 @@
     const tagline = document.getElementById('hero-tagline');
     const cue = document.getElementById('hero-cue');
     const reveals = Array.from(document.querySelectorAll('[data-reveal]'));
-    const timeline = document.getElementById('timeline');
+    const visionScroll = document.getElementById('vision-scroll');
+    const vision = document.getElementById('vision');
+    const navH = 68;
+    let pinTop = 0, pinLen = 0;
+
+    // 고정 위치: 섹션이 화면보다 작으면 메뉴 바로 아래, 크면 섹션 아래끝(시간선)이 화면 아래끝에 맞도록
+    function layout() {
+      const vh = window.innerHeight;
+      const h = vision.offsetHeight;
+      pinTop = Math.min(navH, vh - h);
+      pinLen = Math.round(vh * 0.8);
+      vision.style.top = pinTop + 'px';
+      visionScroll.style.height = (h + pinLen) + 'px';
+    }
+    layout();
 
     function update() {
       const vh = window.innerHeight;
@@ -433,19 +454,22 @@
       tagline.style.transform = 'translateY(calc(-50% + ' + ((1 - tIn) * 48 - tOut * 48).toFixed(1) + 'px)) scale(' + (0.94 + 0.06 * tIn) + ')';
       cue.style.opacity = 1 - range(p, 0, 0.12);
 
-      // 일반 요소: 화면 아래에서 들어오며 떠오름
+      // 비전 고정 구간 진행도: 0 = 막 고정됨(섹션 전체가 보임), 1 = 고정 풀림
+      const vp = clamp((pinTop - visionScroll.getBoundingClientRect().top) / pinLen);
+
+      // 일반 요소: 화면 아래에서 들어오며 떠오름 (비전 안의 요소는 고정이 시작되면 다 떠올라 있게)
       reveals.forEach((el) => {
         const r = el.getBoundingClientRect();
         const delay = parseFloat(el.dataset.delay || 0);
-        const t = ease(clamp((vh - r.top) / (vh * 0.4) - delay));
+        let t = ease(clamp((vh - r.top) / (vh * 0.4) - delay));
+        if (vision.contains(el)) t = Math.max(t, ease(range(vp, 0, 0.12)));
         el.style.opacity = t;
         el.style.transform = 'translateY(' + ((1 - t) * 64).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * t).toFixed(4) + ')';
       });
 
       // 시간선: 점이 왼쪽부터 하나씩 켜지고 마지막에 선이 그어짐
-      // 화면 아래로 들어온 직후(위쪽이 화면 100% → 86% 지점) 사이에 끝까지 그려져서, 섹션 끝에서 멈춰도 선이 완성됨
-      const tr = document.getElementById('track').getBoundingClientRect();
-      const tp = clamp((vh * 1.0 - tr.top) / (vh * 0.14));
+      // 섹션이 다 보이고 고정된 뒤에야 시작해서, 고정이 풀리기 전에 끝남
+      const tp = range(vp, 0.08, 0.88);
       const n = timelineDots.length;
       // 점은 진행도 0 → 0.7 안에 모두 켜지고(각 점은 0.1 동안), 선은 그 뒤 0.72 → 1 에 그어짐
       timelineDots.forEach((d, i) => {
@@ -463,7 +487,8 @@
       requestAnimationFrame(() => { update(); ticking = false; });
     }
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', () => { layout(); onScroll(); });
+    window.addEventListener('load', () => { layout(); onScroll(); });
     update();
   })();
 </script>

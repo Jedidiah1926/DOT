@@ -1,229 +1,398 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOT | Official Website</title>
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(0, 0, 0, 0.08);
-            --bg-color: #ffffff;
-            --main-text: #000000;
-            --sub-text: #555555;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOT</title>
+<meta name="description" content="DOT — 점을 모아 하나의 시간선, 하나의 이야기를 만든다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --ink: #05080B;
+    --ink-2: #0C1217;
+    --ink-glow: #0F181E;
+    --line-dark: #18212A;
+    --line-dark-2: #1F2A33;
+    --on-dark: #F5F7FA;
+    --on-dark-2: #C7CDD3;
+    --on-dark-3: #8A949E;
+    --paper: #F5F5F7;
+    --card: #FFFFFF;
+    --on-light: #0A0A0A;
+    --on-light-2: #6E6E73;
+    --hemicycle: #00F0FF;
+    --tile: radial-gradient(circle at 50% 45%, var(--ink-glow) 0%, var(--ink) 75%);
+  }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#e0e0e0 0.8px, transparent 0.8px);
-            background-size: 30px 30px;
-            color: var(--main-text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            word-break: keep-all;
-        }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: Inter, 'Noto Sans KR', sans-serif;
+    background: var(--ink);
+    color: var(--on-dark);
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { width: 100%; max-width: 1312px; margin: 0 auto; padding: 0 64px; }
 
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s ease;
-        }
+  /* ---------- wordmark: D · T, 점 지름 = 글자 크기 26%, 대문자 높이 가운데 ---------- */
+  .mark {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .mark .dot {
+    display: inline-block;
+    width: 0.26em; height: 0.26em;
+    margin: 0 0.14em;
+    vertical-align: 0.2335em;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .mark.neon { color: var(--on-dark); text-shadow: 0 0 0.08em rgba(255,255,255,0.22); }
+  .mark.neon .dot { background: #FFFFFF; box-shadow: 0 0 0.06em #FFFFFF, 0 0 0.22em rgba(255,255,255,0.45); }
 
-        .glass-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.07);
-        }
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(5, 8, 11, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+  nav .mark { font-size: 26px; text-decoration: none; }
+  nav ul { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
+  nav ul a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--on-dark-3); display: inline-block; padding: 12px 0; }
+  nav ul a:hover { color: #FFFFFF; }
 
-        nav {
-            width: 85%;
-            max-width: 1100px;
-            margin-top: 30px;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 20px;
-            z-index: 1000;
-        }
+  /* ---------- hero ---------- */
+  .hero {
+    min-height: calc(100vh - 68px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 40px;
+    padding: 96px 24px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 48%, #101A21 0%, var(--ink) 70%);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .hero .mark { font-size: clamp(120px, 21vw, 300px); }
+  .hero p { margin: 0; font-size: clamp(17px, 2vw, 21px); color: var(--on-dark-2); line-height: 1.6; }
+  .hero p strong { color: #FFFFFF; font-weight: 600; }
 
-        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 10px; }
+  /* ---------- section heads ---------- */
+  section { padding: 120px 0; }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: var(--on-dark-3); margin: 0 0 14px; }
+  h2 { margin: 0; font-size: clamp(32px, 4vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+  .lead { margin: 12px 0 0; font-size: 18px; line-height: 1.6; color: var(--on-dark-3); max-width: 640px; }
+  .head { margin-bottom: 56px; }
 
-        .lang-switch button {
-            background: transparent;
-            border: 1px solid #000;
-            color: #000;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            cursor: pointer;
-            margin-left: 4px;
-            transition: 0.2s;
-        }
+  /* ---------- vision ---------- */
+  #vision { background: radial-gradient(circle at 50% 20%, var(--ink-glow) 0%, var(--ink) 70%); }
+  .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .pillar {
+    border: 1px solid var(--line-dark-2);
+    border-radius: 24px;
+    padding: 36px;
+    background: rgba(255,255,255,0.02);
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .pillar .eyebrow { margin: 0; }
+  .pair {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+    font-weight: 800; font-size: clamp(34px, 3.2vw, 42px); line-height: 1; letter-spacing: -0.04em;
+    color: #6B7580;
+  }
+  .pair b { color: #FFFFFF; font-weight: 800; text-shadow: 0 0 14px rgba(255,255,255,0.45); }
+  .pair .sep { width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 10px #FFFFFF; flex-shrink: 0; }
+  .pillar p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--on-dark-2); }
 
-        .lang-switch button.active { background: #000; color: #fff; }
+  .timeline { margin-top: 88px; display: flex; flex-direction: column; gap: 22px; }
+  .timeline .track { position: relative; height: 16px; overflow: hidden; }
+  .timeline .track span { position: absolute; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: #FFFFFF; }
+  .timeline .track .line { top: 6px; height: 4px; width: auto; border-radius: 2px; right: 0; box-shadow: 0 0 10px #FFFFFF; }
+  .timeline .legend { display: flex; justify-content: space-between; gap: 16px; font-size: 15px; color: var(--on-dark-3); }
 
-        header { text-align: center; padding: 160px 20px 100px 20px; }
-        .hero-title { font-size: 6rem; font-weight: 900; margin: 0; letter-spacing: -3px; }
+  /* ---------- light sections ---------- */
+  .light { background: var(--paper); color: var(--on-light); }
+  .light .eyebrow, .light .lead { color: var(--on-light-2); }
 
-        section { width: 85%; max-width: 1000px; margin-bottom: 60px; padding: 70px; box-sizing: border-box; }
+  /* ---------- products ---------- */
+  .products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .product {
+    background: var(--card);
+    border-radius: 28px;
+    padding: 64px 32px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+    text-align: center;
+  }
+  .app-tile {
+    width: 168px; height: 168px; border-radius: 38px;
+    background: radial-gradient(circle at 50% 42%, var(--ink-glow) 0%, var(--ink) 75%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hemi { position: relative; width: 130px; height: 82px; margin-top: 12px; }
+  .hemi span { position: absolute; width: 8px; height: 8px; border-radius: 50%; }
+  .hemi .podium { left: 55px; top: 71px; width: 20px; height: 3px; border-radius: 0; background: #E6E6E6; box-shadow: 0 0 4px rgba(255,255,255,0.6); }
+  .product .name { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.04em; }
+  .product .name::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .product .desc { font-size: 15px; color: var(--on-light-2); margin: -16px 0 0; }
+  .product.next .name { color: #8E8E93; }
 
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #000;
-            color: #fff;
-            font-size: 0.65rem;
-            font-weight: 700;
-            border-radius: 2px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-        }
+  /* ---------- brand ---------- */
+  .brand-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .plate {
+    position: relative;
+    height: 420px; border-radius: 28px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .plate .mark { font-size: clamp(96px, 11vw, 168px); }
+  .plate .cap { position: absolute; left: 32px; bottom: 28px; font-size: 14px; }
+  .plate.dark { background: var(--tile); }
+  .plate.dark .cap { color: #A1A1A6; }
+  .plate.paper { background: var(--card); color: var(--on-light); }
+  .plate.paper .cap { color: var(--on-light-2); }
 
-        .game-title { font-size: 4rem; margin: 0; font-weight: 900; letter-spacing: -1px; }
+  .brand-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 32px; }
+  .spec {
+    background: var(--card); border-radius: 20px; padding: 28px;
+    display: flex; flex-direction: column; gap: 20px; min-height: 220px;
+  }
+  .spec .t { font-size: 15px; font-weight: 600; }
+  .spec .s { font-size: 13px; color: var(--on-light-2); line-height: 1.5; }
+  .spec .body { flex-grow: 1; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .icon { background: var(--tile); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--line-dark); }
+  .icon span { border-radius: 50%; background: #FFFFFF; }
+  .icon.l { width: 96px; height: 96px; border-radius: 22px; }
+  .icon.l span { width: 32px; height: 32px; box-shadow: 0 0 10px #FFFFFF, 0 0 24px rgba(255,255,255,0.4); }
+  .icon.m { width: 48px; height: 48px; border-radius: 11px; }
+  .icon.m span { width: 16px; height: 16px; box-shadow: 0 0 6px #FFFFFF; }
+  .icon.s { width: 24px; height: 24px; border-radius: 6px; }
+  .icon.s span { width: 9px; height: 9px; }
+  .product-mark { display: flex; align-items: center; gap: 16px; }
+  .product-mark .mark { font-size: 36px; color: #8A949E; }
+  .product-mark .mark .dot { background: var(--hemicycle); box-shadow: 0 0 8px var(--hemicycle); }
+  .product-mark .label { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
+  .swatches { display: flex; gap: 12px; }
+  .swatches span { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
+  .swatches .w { background: #FFFFFF; box-shadow: 0 0 0 4px var(--ink) inset; }
+  .swatches .k { background: var(--ink); }
+  .swatches .c { background: var(--hemicycle); }
+  .type-sample { font-weight: 800; font-size: 56px; letter-spacing: -0.04em; line-height: 1; }
 
-        .tagline {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 20px 0 30px 0;
-            color: #111;
-            font-style: italic;
-            opacity: 0.9;
-        }
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line-dark); padding: 48px 0; }
+  footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  footer .mark { font-size: 22px; }
+  footer small { font-size: 13px; color: var(--on-dark-3); }
 
-        .description { line-height: 1.9; font-size: 1.1rem; color: var(--sub-text); max-width: 85%; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 85%; max-width: 1000px; margin-bottom: 120px; }
-        .small-card { padding: 45px; }
-
-        footer { padding-bottom: 80px; color: #bbb; font-size: 0.75rem; letter-spacing: 3px; }
-
-        [data-lang] { display: none; }
-    </style>
+  /* ---------- responsive ---------- */
+  @media (max-width: 960px) {
+    .wrap { padding: 0 32px; }
+    .pillars, .products, .brand-hero, .brand-row { grid-template-columns: minmax(0, 1fr); }
+    .plate { height: 300px; }
+    section { padding: 88px 0; }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 16px; }
+    nav ul { gap: 18px; }
+    nav ul a { font-size: 14px; }
+    .pillar { padding: 28px; }
+    .product { padding: 48px 20px; }
+    .product .name { font-size: 36px; }
+    .timeline .legend { font-size: 13px; }
+    .plate .cap { left: 20px; bottom: 18px; }
+  }
+</style>
 </head>
 <body>
 
-    <nav class="glass-panel">
-        <div class="logo">DOT</div>
-        <div class="lang-switch">
-            <button onclick="setLang('ko')" id="btn-ko">KR</button>
-            <button onclick="setLang('en')" id="btn-en">EN</button>
-            <button onclick="setLang('jp')" id="btn-jp">JP</button>
-        </div>
-    </nav>
+<nav aria-label="주 메뉴">
+  <div class="wrap">
+    <a href="#top" class="mark neon" aria-label="DOT 홈">D<span class="dot"></span>T</a>
+    <ul>
+      <li><a href="#vision">비전</a></li>
+      <li><a href="#products">제품</a></li>
+      <li><a href="#brand">브랜드</a></li>
+    </ul>
+  </div>
+</nav>
 
-    <header>
-        <h1 class="hero-title">DOT</h1>
-        <p data-lang="ko" style="margin-top:20px; letter-spacing: 2px;">기록되지 않은 이야기들을 연결합니다</p>
-        <p data-lang="en" style="margin-top:20px; letter-spacing: 2px;">CONNECTING STORIES YET TO BE TOLD</p>
-        <p data-lang="jp" style="margin-top:20px; letter-spacing: 2px;">記録されていない物語を繋ぎます</p>
-    </header>
+<header class="hero" id="top">
+  <h1 class="mark neon" aria-label="DOT">D<span class="dot"></span>T</h1>
+  <p>O 자리에 점 하나.<br><strong>점을 모아 하나의 시간선, 하나의 이야기를 만듭니다.</strong></p>
+</header>
 
-    <section class="glass-panel">
-        <span class="tag">Flagship Project</span>
-        <h2 class="game-title">Memoria</h2> 
-        
-        <div class="tagline">
-            <span data-lang="ko">"이 세상을 단 한 권의 책으로 만들 수 있다면, 어떤 모습을 하고 있을 것 같아?"</span>
-            <span data-lang="en">"If this entire world were bound into a single book… what do you imagine it would look like?"</span>
-            <span data-lang="jp">"もしこの世界を、たった一冊の本にできるとしたら──それは、どんな姿をしていると思う？"</span>
-        </div>
+<main>
+  <section id="vision">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">VISION</p>
+        <h2>D와 T의 내적</h2>
+        <p class="lead">점을 모아 하나의 시간선, 하나의 이야기를 만든다.</p>
+      </div>
 
-        <p class="description" data-lang="ko">흩어진 시간의 파편들을 모아 거대한 운명을 완성하는 서사 중심의 게임입니다. DOT의 철학이 시작된 가장 방대한 세계관을 품고 있습니다.</p>
-        <p class="description" data-lang="en">A narrative-driven experience collecting fragments of time. It holds the most extensive universe where DOT's philosophy began.</p>
-        <p class="description" data-lang="jp">散らばった時間の破片を集め、巨大な運命を完成させる物語中心のゲームです。DOTの哲学が込められた最も広大な世界観を持っています。</p>
-    </section>
+      <div class="pillars">
+        <article class="pillar">
+          <p class="eyebrow">01 · 무엇을 만드는가</p>
+          <div class="pair"><span><b>D</b>ata</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ale</span></div>
+          <p>숫자로 돌아가는 시스템 위에 이야기를 얹어요.</p>
+        </article>
+        <article class="pillar">
+          <p class="eyebrow">02 · 어떻게 만드는가</p>
+          <div class="pair"><span><b>D</b>esign</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ruth</span></div>
+          <p>설계한 세계가 진짜처럼 작동하게 만들어요.</p>
+        </article>
+        <article class="pillar">
+          <p class="eyebrow">03 · 어디로 가는가</p>
+          <div class="pair"><span><b>D</b>ream</span><span class="sep" aria-hidden="true"></span><span><b>T</b>ime</span></div>
+          <p>그렇게 쌓인 점들이 하나의 시간선이 돼요.</p>
+        </article>
+      </div>
 
-    <section class="glass-panel">
-        <span class="tag">The Ashen ██████</span>
-        <h2 class="game-title">█████████</h2>
-
-        <div class="tagline">
-            <span data-lang="ko">"██████████████████"</span>
-            <span data-lang="en">"██████████████████"</span>
-            <span data-lang="jp">"██████████████████"</span>
-        </div>
-
-        <!-- <p class="description" data-lang="ko">'Lus'는 Memoria의 세계가 탄생하기 전, 최초의 빛이 생겨난 기원을 다룹니다. 우리가 알고 있는 세계의 이면을 탐구합니다.</p>
-        <p class="description" data-lang="en">'Lus' deals with the origin of the first light before the world of Memoria. Exploring the hidden side of the world we know.</p>
-        <p class="description" data-lang="jp">「Lus」は、Memoriaの世界が誕生する前、最初の光が生まれた起源を扱います。私たちが知っている世界の裏側を探究します。</p> -->
-    </section>
-    
-    <section class="glass-panel">
-        <span class="tag">The Black ██████</span>
-        <h2 class="game-title">Lus</h2>
-
-        <div class="tagline">
-            <span data-lang="ko">"그대는 내 어둠을 밝힌 빛이었다."</span>
-            <span data-lang="en">"Thou wert the LIGHT in my darkness."</span>
-            <span data-lang="jp">"君は、私の闇を照らした光だった。"</span>
-        </div>
-
-        <p class="description" data-lang="ko">'Lus'는 Memoria의 세계가 탄생하기 전, 최초의 빛이 생겨난 기원을 다룹니다. 우리가 알고 있는 세계의 이면을 탐구합니다.</p>
-        <p class="description" data-lang="en">'Lus' deals with the origin of the first light before the world of Memoria. Exploring the hidden side of the world we know.</p>
-        <p class="description" data-lang="jp">「Lus」は、Memoriaの世界が誕生する前、最初の光が生まれた起源を扱います。私たちが知っている世界の裏側を探究します。</p>
-    </section>
-
-    <div class="grid">
-        <div class="glass-panel small-card">
-            <h3 style="margin-top:0; letter-spacing: -0.5px;">Project Alpha</h3>
-            <div style="font-style: italic; margin-bottom: 15px; font-weight: 600; font-size: 1.1rem;">
-                <span data-lang="ko">"보이지 않는 선을 따라가세요."</span>
-                <span data-lang="en">"Follow the invisible lines."</span>
-                <span data-lang="jp">"見えない線を辿ってください。"</span>
-            </div>
-            <p data-lang="ko" style="color:var(--sub-text); font-size: 0.95rem;">세계관을 공유하는 퍼즐 어드벤처.</p>
-            <p data-lang="en" style="color:var(--sub-text); font-size: 0.95rem;">A puzzle adventure in the same universe.</p>
-            <p data-lang="jp" style="color:var(--sub-text); font-size: 0.95rem;">世界観を共有するパズルアドベンチャー。</p>
-        </div>
-        <div class="glass-panel small-card">
-            <h3 style="margin-top:0; letter-spacing: -0.5px;">Project Beta</h3>
-            <div style="font-style: italic; margin-bottom: 15px; font-weight: 600; font-size: 1.1rem;">
-                <span data-lang="ko">"혼자가 아닐 때, 진실은 드러납니다."</span>
-                <span data-lang="en">"Truth reveals when you are not alone."</span>
-                <span data-lang="jp">"一人ではない時、真実は現れる。"</span>
-            </div>
-            <p data-lang="ko" style="color:var(--sub-text); font-size: 0.95rem;">실험적인 멀티플레이어 프로젝트.</p>
-            <p data-lang="en" style="color:var(--sub-text); font-size: 0.95rem;">Experimental multiplayer project.</p>
-            <p data-lang="jp" style="color:var(--sub-text); font-size: 0.95rem;">実験的なマルチプレイヤープロジェクト。</p>
-        </div>
+      <div class="timeline">
+        <div class="track" id="track" role="img" aria-label="점이 모여 하나의 선이 되는 시간선"></div>
+        <div class="legend"><span>dt · 한 순간</span><span>∫ dt · 하나의 시간선</span></div>
+      </div>
     </div>
+  </section>
 
-    <footer>
-        &copy; 2026 DOT. CALIFORNIA, USA.
-    </footer>
+  <section id="products" class="light">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">PRODUCTS</p>
+        <h2>DOT 제품 패밀리</h2>
+        <p class="lead">어두운 타일 위, 빛나는 점으로 그린 그림. 제품마다 네온 색 하나.</p>
+      </div>
 
-    <script>
-        function setLang(lang) {
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                el.style.display = 'none';
-            });
+      <div class="products">
+        <article class="product">
+          <div class="app-tile" role="img" aria-label="Hemicycle 앱 아이콘">
+            <div class="hemi" id="hemi"><span class="podium"></span></div>
+          </div>
+          <span class="name">Hemicycle</span>
+          <p class="desc">의회 게임 · 점이 의석이 돼요</p>
+        </article>
+        <article class="product next">
+          <div class="app-tile" aria-hidden="true">
+            <span style="width:14px;height:14px;border-radius:50%;background:#5A6470"></span>
+          </div>
+          <span class="name">다음 제품</span>
+          <p class="desc">같은 타일에 점 그림과 네온 색만 바꿔요</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-            document.querySelectorAll('[data-lang="' + lang + '"]').forEach(el => {
-                if (el.tagName === 'SPAN') {
-                    el.style.display = 'inline';
-                } else {
-                    el.style.display = 'block';
-                }
-            });
+  <section id="brand" class="light" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">BRAND</p>
+        <h2>DOT 브랜드</h2>
+        <p class="lead">O 자리에 점 하나. 어두운 곳에서는 제품 라인처럼 빛나요.</p>
+      </div>
 
-            document.querySelectorAll('.lang-switch button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById('btn-' + lang).classList.add('active');
-            document.documentElement.lang = lang;
-        }
-        window.onload = () => setLang('ko');
-    </script>
+      <div class="brand-hero">
+        <div class="plate dark">
+          <span class="mark neon" role="img" aria-label="DOT">D<span class="dot"></span>T</span>
+          <span class="cap">네온 · 기본</span>
+        </div>
+        <div class="plate paper">
+          <span class="mark" role="img" aria-label="DOT">D<span class="dot"></span>T</span>
+          <span class="cap">라이트 · 인쇄용</span>
+        </div>
+      </div>
+
+      <div class="brand-row">
+        <div class="spec">
+          <div class="body">
+            <span class="icon l" aria-hidden="true"><span></span></span>
+            <span class="icon m" aria-hidden="true"><span></span></span>
+            <span class="icon s" aria-hidden="true"><span></span></span>
+          </div>
+          <div><div class="t">심볼 · 앱 아이콘과 파비콘</div><div class="s">어두운 타일 위 빛나는 점</div></div>
+        </div>
+        <div class="spec">
+          <div class="body">
+            <span class="type-sample">Aa</span>
+            <div class="product-mark">
+              <span class="mark" aria-hidden="true">D<span class="dot"></span>T</span>
+              <span class="label">Hemicycle</span>
+            </div>
+          </div>
+          <div><div class="t">워드마크 · 서체</div><div class="s">Inter ExtraBold. 점은 대문자 높이 가운데, 지름은 글자 크기의 26%. 제품 표기는 가운데 점만 제품 색.</div></div>
+        </div>
+        <div class="spec">
+          <div class="body">
+            <div class="swatches" aria-hidden="true"><span class="w"></span><span class="k"></span><span class="c"></span></div>
+          </div>
+          <div><div class="t">색</div><div class="s">회사는 흰 네온 · 제품은 각자 네온 하나</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mark neon" aria-label="DOT">D<span class="dot"></span>T</span>
+    <small>&copy; 2026 DOT</small>
+  </div>
+</footer>
+
+<script>
+  // 비전 시간선: 점 사이 간격이 점점 좁아지다가 하나의 선으로 이어져요
+  (function () {
+    const track = document.getElementById('track');
+    let x = 0, gap = 64;
+    for (let i = 0; i < 40; i++) {
+      const o = (0.35 + 0.65 * i / 39).toFixed(2);
+      const d = document.createElement('span');
+      d.style.left = Math.round(x) + 'px';
+      d.style.opacity = o;
+      d.style.boxShadow = '0 0 6px rgba(255,255,255,' + o + ')';
+      track.appendChild(d);
+      x += gap;
+      gap = Math.max(4, gap * 0.9);
+    }
+    const line = document.createElement('span');
+    line.className = 'line';
+    line.style.left = Math.round(x) + 'px';
+    track.appendChild(line);
+  })();
+
+  // Hemicycle 아이콘: 4줄 반원(16·13·10·7석)을 각도 순으로 정당에 배분
+  (function () {
+    const hemi = document.getElementById('hemi');
+    const rows = [[57, 16], [47, 13], [37, 10], [27, 7]];
+    const all = [];
+    rows.forEach(([r, n]) => {
+      for (let j = 0; j < n; j++) {
+        const a = Math.PI - j * Math.PI / (n - 1);
+        all.push({ a, r, x: 65 + r * Math.cos(a) - 4, y: 62 - r * Math.sin(a) - 4 });
+      }
+    });
+    all.sort((p, q) => (q.a - p.a) || (q.r - p.r));
+    const parties = [['#FF1A55', 10], ['#3DF58A', 7], ['#FFD21A', 7], ['#00F0FF', 18], ['#B58CFF', 4]];
+    let idx = 0;
+    parties.forEach(([c, k]) => {
+      for (let i = 0; i < k && idx < all.length; i++, idx++) {
+        const p = all[idx];
+        const s = document.createElement('span');
+        s.style.left = Math.round(p.x) + 'px';
+        s.style.top = Math.round(p.y) + 'px';
+        s.style.background = c;
+        s.style.boxShadow = '0 0 5px ' + c;
+        hemi.appendChild(s);
+      }
+    });
+  })();
+</script>
 </body>
 </html>

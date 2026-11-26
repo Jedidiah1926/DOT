@@ -328,26 +328,36 @@
   let timelineLine;
   (function () {
     const track = document.getElementById('track');
-    let x = 0, gap = 64;
-    const DOT_COUNT = 40;
+    const DOT_COUNT = 44;
+    const MIN_GAP = 2;      // 선에 붙는 끝부분은 2px 간격으로 겹쳐 촘촘하게
+    const CLUSTER_GAP = 12; // 간격이 이보다 좁아지는 지점부터 '뭉치기 시작'으로 보고 4px(선 두께)로 고정
+
+    // 간격: 64px에서 0.9배씩 줄어든다. 위치·크기를 정수 px로 맞춰 점이 흐리거나 찌그러지지 않게
+    const gaps = [];
+    for (let i = 0; i < DOT_COUNT; i++) gaps.push(Math.max(MIN_GAP, Math.round(64 * Math.pow(0.9, i))));
+    let cluster = gaps.findIndex((g) => g < CLUSTER_GAP);
+    if (cluster < 3) cluster = DOT_COUNT;
+
+    // 지름: 뭉치기 전까지 세 묶음으로 나눠 10 → 8 → 6, 뭉치는 지점부터 4 (모두 짝수라 세로 가운데에 정확히 놓임)
+    const sizeAt = (i) => (i >= cluster ? 4 : 10 - 2 * Math.floor(i / (cluster / 3)));
+
+    let x = 0;
     for (let i = 0; i < DOT_COUNT; i++) {
       const o = 0.35 + 0.65 * i / (DOT_COUNT - 1);
-      // 지름: 10px → 4px(선 두께). 점 하나마다 6 / (점 개수 - 1)px씩 일정하게 줄어 마지막 점이 선 두께가 된다. 세로 가운데(8px)에 맞춤
-      const size = 10 - 6 * i / (DOT_COUNT - 1);
+      const size = sizeAt(i);
       const d = document.createElement('span');
-      d.style.left = x.toFixed(1) + 'px';
-      d.style.width = d.style.height = size.toFixed(2) + 'px';
-      d.style.top = (8 - size / 2).toFixed(2) + 'px';
+      d.style.left = x + 'px';
+      d.style.width = d.style.height = size + 'px';
+      d.style.top = (8 - size / 2) + 'px';
       d.style.boxShadow = '0 0 6px rgba(255,255,255,' + o.toFixed(2) + ')';
       d.dataset.o = o;
       track.appendChild(d);
       timelineDots.push(d);
-      x += gap;
-      gap = Math.max(4, gap * 0.9);
+      x += gaps[i];
     }
     timelineLine = document.createElement('span');
     timelineLine.className = 'line';
-    timelineLine.style.left = Math.round(x) + 'px';
+    timelineLine.style.left = x + 'px';
     track.appendChild(timelineLine);
   })();
 
